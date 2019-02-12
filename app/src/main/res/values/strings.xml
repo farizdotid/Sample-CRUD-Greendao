@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Catat Pengeluaran</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_nominal">Nominal</string>
+    <string name="title_pembelian">Pembelian</string>
+    <string name="title_simpan">Simpan</string>
+    <string name="title_pengeluaran">Total Pengeluaran</string>
+</resources>
