@@ -87,11 +87,19 @@ public class PengeluaranAdapter extends
                     mAdapterCallback.onDelete(getAdapterPosition());
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mAdapterCallback.onLongClick(getAdapterPosition());
+                    return true;
+                }
+            });
         }
     }
 
     public interface PengeluaranAdapterCallback {
-        void onRowPengeluaranAdapterClicked(int position);
+        void onLongClick(int position);
         void onDelete(int position);
     }
 }

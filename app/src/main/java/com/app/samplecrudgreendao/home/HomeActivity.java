@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,13 +13,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.samplecrudgreendao.R;
 import com.app.samplecrudgreendao.create.CreateActivity;
+import com.app.samplecrudgreendao.edit.EditDialogFragment;
 import com.app.samplecrudgreendao.utils.FunctionHelper;
 import com.app.samplecrudgreendao.utils.database.DaoHandler;
 import com.app.samplecrudgreendao.utils.database.DaoSession;
 import com.app.samplecrudgreendao.utils.database.TblPengeluaran;
+import com.app.samplecrudgreendao.utils.database.TblPengeluaranDao;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -28,7 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity
-        implements PengeluaranAdapter.PengeluaranAdapterCallback {
+        implements PengeluaranAdapter.PengeluaranAdapterCallback,
+        EditDialogFragment.EditDialogListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -71,8 +76,14 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRowPengeluaranAdapterClicked(int position) {
+    public void onLongClick(int position) {
+        long id = tblPengeluaranList.get(position).getIdTblPengeluaran();
+        String pembelian = tblPengeluaranList.get(position).getPengeluaran();
+        int nominal = tblPengeluaranList.get(position).getNominal();
 
+        FragmentManager fm = getSupportFragmentManager();
+        EditDialogFragment editDialogFragment = EditDialogFragment.newInstance(id, pembelian, nominal);
+        editDialogFragment.show(fm, "dialog_edit");
     }
 
     @Override
@@ -122,5 +133,16 @@ public class HomeActivity extends AppCompatActivity
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+
+    @Override
+    public void requestUpdate(long id, String pembelian, int nominal) {
+        TblPengeluaran tblPengeluaran = daoSession.getTblPengeluaranDao().load(id);
+        tblPengeluaran.setPengeluaran(pembelian);
+        tblPengeluaran.setNominal(nominal);
+        daoSession.getTblPengeluaranDao().update(tblPengeluaran);
+
+        pengeluaranAdapter.notifyDataSetChanged();
+        tvTotal.setText(FunctionHelper.convertRupiah(getTotal()));
     }
 }
