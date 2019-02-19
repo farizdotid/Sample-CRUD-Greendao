@@ -58,6 +58,10 @@ public class HomeActivity extends AppCompatActivity
         daoSession = DaoHandler.getInstance(this);
         setSupportActionBar(toolbar);
 
+        /*
+        Fungi untuk READ data dari database. Contoh disini memanggil data yang berada dalam
+        tabel TblPengeluaran.
+         */
         tblPengeluaranList = daoSession.getTblPengeluaranDao().queryBuilder().list();
         pengeluaranAdapter = new PengeluaranAdapter(tblPengeluaranList, this);
         rvNote.setLayoutManager(new LinearLayoutManager(this));
@@ -75,6 +79,10 @@ public class HomeActivity extends AppCompatActivity
         });
     }
 
+    /*
+    Fungsi untuk mengirim data dari adapter ke edit dialog.
+    Disini memanggil EditDialogFragment dengan parameter id, pembelian, dan nominal.
+     */
     @Override
     public void onLongClick(int position) {
         long id = tblPengeluaranList.get(position).getIdTblPengeluaran();
@@ -86,12 +94,18 @@ public class HomeActivity extends AppCompatActivity
         editDialogFragment.show(fm, "dialog_edit");
     }
 
+    /*
+    Fungsi delete data. Sebelum menghapus data ada semacam popup terlebih dahulu agar meyakinkan user.
+     */
     @Override
     public void onDelete(int position) {
         String name = tblPengeluaranList.get(position).getPengeluaran();
         showDialogDelete(position, name);
     }
 
+    /*
+    Fungsi untuk men-totalkan semua nominal yang ada didalam tabel TblPengeluaran.
+     */
     private int getTotal(){
         int total = 0;
         for (int i = 0; i < tblPengeluaranList.size(); i++){
@@ -101,6 +115,10 @@ public class HomeActivity extends AppCompatActivity
         return total;
     }
 
+    /*
+    Fungsi untuk memanggil Alert Dialog. Alert dialog ini berfungsi untuk meyakinkan user kembali
+    apakah datanya ingin dihapus atau tidak.
+     */
     private void showDialogDelete(final int position, String name){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(HomeActivity.this);
         builder1.setMessage("Yakin untuk menghapus item "+ name + " ?");
@@ -110,6 +128,9 @@ public class HomeActivity extends AppCompatActivity
                 "Ya",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        /*
+                        Fungsi delete suatu data bedasarkan idnya.
+                         */
                         long idTbl = tblPengeluaranList.get(position).getIdTblPengeluaran();
                         daoSession.getTblPengeluaranDao().deleteByKey(idTbl);
 
@@ -135,6 +156,11 @@ public class HomeActivity extends AppCompatActivity
         alert11.show();
     }
 
+    /*
+    Fungsi ini untuk menerima data yang dikirimkan dari EditDialogFragment ke HomeActivity.
+    Data yang dikirimkan dari EditDialogFragment ini ada id, pembelian, dan nominal. Lalu
+    setelah mendapatkan datanya panggil fungsi update dari Greendao.
+     */
     @Override
     public void requestUpdate(long id, String pembelian, int nominal) {
         TblPengeluaran tblPengeluaran = daoSession.getTblPengeluaranDao().load(id);

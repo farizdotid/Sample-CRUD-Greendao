@@ -98,6 +98,10 @@ public class EditDialogFragment extends DialogFragment {
                 String pembelian = etPembelian.getText().toString();
                 String nominal = etNominal.getText().toString();
 
+                /*
+                Fungsi ini iuntuk mengirim data berupa id, pembelian, dan nominal ke
+                activity/fragment yang di implementasinya.
+                 */
                 editDialogListener.requestUpdate(mId, pembelian, Integer.parseInt(nominal));
                 getDialog().dismiss();
             }
@@ -110,6 +114,16 @@ public class EditDialogFragment extends DialogFragment {
         unbinder.unbind();
     }
 
+    /*
+    Interface EditDialogListener ini untuk digunakan dalam class yang kita implement nantinya.
+    EditDialogListener ini berisi fungsi requestUpdate dengan parameter id, pembelian, nominal.
+    Nah nantinya data yang ada di EditDialogFragment ini kita akan parsing ke activity/frgament yang
+    diimplementnya.
+
+    Sebagai contoh : Dari edit dialog ini user meng-inputkan pembelian "Baju Supreme" dan nominalnya
+    "5000", maka si activity/fragment implementnya akan menerima data tersebut. Data tersebut nanti
+    kita akan olah sesuai dengan kebtuuhan.
+     */
     public interface EditDialogListener {
         void requestUpdate(long id, String pembelian, int nominal);
     }

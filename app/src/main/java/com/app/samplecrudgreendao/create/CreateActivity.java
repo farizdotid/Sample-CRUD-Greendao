@@ -51,8 +51,13 @@ public class CreateActivity extends AppCompatActivity {
                 String nominal = etNominal.getText().toString();
 
                 if (pembelian.isEmpty() || nominal.isEmpty()){
-                    Toast.makeText(CreateActivity.this, "Data tidak", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateActivity.this, "Data tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 } else {
+                    /*
+                    Fungsi untuk menambahkan data kedalam database. Disini kita menambahkan data
+                    kedalam tabel TblPengeluaran.
+                    Di Greendao jika mau menambakan data fungsi yang kita panggil adalah insert.
+                     */
                     TblPengeluaran tblPengeluaran = new TblPengeluaran();
                     tblPengeluaran.setPengeluaran(pembelian);
                     tblPengeluaran.setNominal(Integer.parseInt(nominal));

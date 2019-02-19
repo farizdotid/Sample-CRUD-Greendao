@@ -10,6 +10,9 @@ import android.database.sqlite.SQLiteDatabase;
  * linkedin : https://www.linkedin.com/in/farizramadhan/
  */
 public class DaoHandler {
+    /*
+    Fungsi untuk konfigurasi Greendao. Dibuat singleton class agar tinggal panggil saja.
+     */
     public static DaoSession getInstance(Context context) {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "catatpengeluaran_db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
